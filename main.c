@@ -1,4 +1,5 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 int sum;
 void *runner(void* param);
@@ -13,13 +14,16 @@ int main(int argc,char* argv[]){
     fprintf(stderr,"%d must be >= 0\n",atoi(argv[1]));
     return -1;
   }
+  pthread_attr_init(&attr);
+  pthread_create(&tid,&attr,runner,argv[1]);
+  pthread_join(tid,NULL);
   printf("Sum = %d\n",sum);
 }
 void *runner(void* param){
-  int i,upper = atoi(param);
+  int i,upper = atoi((char*)param);
   sum = 0;
   for(i=1;i<=upper;i++){
     sum+=i;
   }
-  pthread.exit(0);
+  pthread_exit(0);
 }
